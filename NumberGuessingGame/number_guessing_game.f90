@@ -2,23 +2,24 @@ program number_guessing_game
 
     implicit none
 
-    integer :: guess
+    integer :: guess, winning_number
     logical :: is_correct
 
     character(len=:), allocatable :: fmt_i, fmt_o
     fmt_i = "(a, $)"
     fmt_o = "(*(1x, g0))"
 
+    winning_number = generate_random_number()
     is_correct = .false.
 
     print fmt_o, "Number Guessing Game"
-    print fmt_o, "Guess a number between 1 and 100, and you will be told"
+    print fmt_o, "Guess a number between 0 and 100, and you will be told"
     print fmt_o, "whether your guess is too high, too low, or correct."
 
     do
 
         guess = solicit_guess()
-        is_correct = evaluate_guess(guess, 72)
+        is_correct = evaluate_guess(guess, winning_number)
 
         if (is_correct) exit
 
@@ -52,5 +53,16 @@ program number_guessing_game
         end if
 
     end function evaluate_guess
+
+    function generate_random_number() result (random_integer)
+
+        real :: random_real
+        integer :: random_integer
+
+        call random_number(random_real)
+
+        random_integer = int(random_real * 100.0)
+
+    end function generate_random_number
 
 end program number_guessing_game
